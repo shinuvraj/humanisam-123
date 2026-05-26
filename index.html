@@ -1,0 +1,249 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+#qw{padding:1rem 0;font-family:var(--font-sans)}
+.qhdr{background:linear-gradient(135deg,#185FA5 0%,#534AB7 100%);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between}
+.qhdr-title{font-size:17px;font-weight:500;color:#fff}
+.sec-pill{font-size:12px;padding:4px 12px;border-radius:20px;font-weight:500;color:#fff}
+.sec-hum{background:#3C3489}
+.sec-wc{background:#0F6E56}
+.prog-row{display:flex;align-items:center;gap:10px;margin-bottom:1rem}
+.prog-bg{flex:1;height:6px;background:#D3D1C7;border-radius:3px;overflow:hidden}
+.prog-fill{height:6px;border-radius:3px;background:linear-gradient(90deg,#185FA5,#534AB7);transition:width 0.4s}
+.prog-lbl{font-size:13px;color:var(--color-text-secondary);min-width:44px;text-align:right}
+.timer-wrap{display:flex;align-items:center;gap:6px}
+.timer-num{font-size:15px;font-weight:500;min-width:26px;color:var(--color-text-primary)}
+.tbar-bg{width:72px;height:6px;background:#D3D1C7;border-radius:3px;overflow:hidden}
+.tbar-fill{height:6px;border-radius:3px;transition:width 1s linear,background 0.4s}
+.qcard{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;margin-bottom:1rem}
+.qnum{display:inline-block;background:#EEEDFE;color:#3C3489;font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;margin-bottom:8px}
+.qtext{font-size:15px;font-weight:500;color:var(--color-text-primary);line-height:1.55;margin-bottom:4px;white-space:pre-line}
+.qsub{font-size:13px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:10px}
+.qtbl{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px;table-layout:fixed}
+.qtbl th{background:#EEEDFE;color:#3C3489;padding:7px 10px;text-align:left;border:0.5px solid #AFA9EC;font-weight:500}
+.qtbl td{padding:7px 10px;border:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+.qtbl tr:nth-child(even) td{background:var(--color-background-secondary)}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.opt{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:var(--border-radius-md);border:1.5px solid var(--color-border-secondary);background:var(--color-background-primary);cursor:pointer;transition:all 0.15s;font-size:14px;color:var(--color-text-primary);text-align:left;width:100%}
+.opt:hover:not(:disabled){border-color:#378ADD;background:#E6F1FB}
+.opt .badge{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0;background:#F1EFE8;color:#5F5E5A;border:1.5px solid #D3D1C7}
+.opt.selected .badge{background:#B5D4F4;color:#0C447C;border-color:#378ADD}
+.opt.selected{border-color:#378ADD;background:#E6F1FB;color:#0C447C}
+.opt.correct{border-color:#3B6D11;background:#EAF3DE;color:#27500A;pointer-events:none}
+.opt.correct .badge{background:#C0DD97;color:#27500A;border-color:#3B6D11}
+.opt.wrong{border-color:#A32D2D;background:#FCEBEB;color:#791F1F;pointer-events:none}
+.opt.wrong .badge{background:#F09595;color:#791F1F;border-color:#A32D2D}
+.opt.disabled-plain{pointer-events:none;opacity:0.55}
+.nav-row{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+.nbtn{padding:9px 22px;border-radius:var(--border-radius-md);font-size:14px;cursor:pointer;border:1.5px solid var(--color-border-secondary);background:var(--color-background-primary);color:var(--color-text-primary)}
+.nbtn:hover{background:var(--color-background-secondary)}
+.nbtn.pri{background:#185FA5;color:#fff;border-color:#185FA5}
+.nbtn.pri:hover{background:#0C447C}
+.nbtn:disabled{opacity:0.4;cursor:default}
+.tmsg{font-size:13px;color:#A32D2D;margin-top:8px;display:flex;align-items:center;gap:5px}
+.result-hdr{background:linear-gradient(135deg,#185FA5 0%,#534AB7 100%);border-radius:var(--border-radius-lg);padding:1.5rem;text-align:center;margin-bottom:1.25rem}
+.score-big{font-size:52px;font-weight:500;color:#fff;line-height:1}
+.score-sub{font-size:14px;color:#B5D4F4;margin-top:4px}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.25rem}
+.stat-box{border-radius:var(--border-radius-md);padding:12px;text-align:center}
+.stat-box.c{background:#EAF3DE}.stat-box.w{background:#FCEBEB}.stat-box.s{background:#FAEEDA}
+.stat-num{font-size:22px;font-weight:500}
+.stat-num.c{color:#3B6D11}.stat-num.w{color:#A32D2D}.stat-num.s{color:#854F0B}
+.stat-lbl{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.ans-table{width:100%;border-collapse:collapse;font-size:13px}
+.ans-table th{background:#EEEDFE;color:#3C3489;padding:8px 10px;text-align:left;border:0.5px solid #AFA9EC;font-weight:500}
+.ans-table td{padding:8px 10px;border:0.5px solid var(--color-border-tertiary);vertical-align:top;color:var(--color-text-primary)}
+.ans-table tr:nth-child(even) td{background:var(--color-background-secondary)}
+.tag{font-size:11px;padding:3px 8px;border-radius:12px;font-weight:500;white-space:nowrap}
+.tag.ok{background:#EAF3DE;color:#3B6D11}
+.tag.no{background:#FCEBEB;color:#A32D2D}
+.tag.sk{background:#FAEEDA;color:#854F0B}
+</style>
+
+<h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Social Science quiz — 10 questions, 1 minute each</h2>
+
+<div id="qw">
+  <div class="qhdr">
+    <span class="qhdr-title"><i class="ti ti-school" aria-hidden="true" style="font-size:18px;margin-right:6px;vertical-align:-2px"></i>Answer all questions from 1 to 8. Each carries 1 score.</span>
+    <span class="sec-pill sec-hum" id="sec-pill">Humanism</span>
+  </div>
+  <div class="prog-row">
+    <div class="prog-bg"><div class="prog-fill" id="prog" style="width:10%"></div></div>
+    <span class="prog-lbl" id="prog-lbl">1 / 10</span>
+    <div class="timer-wrap">
+      <i class="ti ti-clock" style="font-size:16px;color:var(--color-text-secondary)" aria-hidden="true"></i>
+      <span class="timer-num" id="tnum">60</span>
+      <div class="tbar-bg"><div class="tbar-fill" id="tbar" style="width:100%;background:#185FA5"></div></div>
+    </div>
+  </div>
+  <div id="qa"></div>
+</div>
+
+<script>
+const ANS=['a','a','c','a','c','a','a','d','a','d'];
+const SEC=['Humanism','Humanism','Humanism','Humanism','Humanism','Weather and Climate','Weather and Climate','Weather and Climate','Weather and Climate','Weather and Climate'];
+const QS=[
+  {q:"1. Match the following:",tbl:{h:["Column I","Column II"],r:[["(A) Humanism","(i) Printing Press"],["(B) Johannes Gutenberg","(ii) Renaissance City"],["(C) Florence","(iii) Study of classics"],["(D) Leonardo da Vinci","(iv) Mona Lisa"]]},o:["A-(iii), B-(i), C-(ii), D-(iv)","A-(ii), B-(iii), C-(iv), D-(i)","A-(iv), B-(ii), C-(i), D-(iii)","A-(i), B-(iv), C-(iii), D-(ii)"]},
+  {q:"2. Consider the following statements:",sub:"Statement 1: Renaissance began in Italy.\nStatement 2: Italy was poor in trade and commerce during the medieval period.",o:["Statement (1) correct, Statement (2) incorrect","Statement (1) incorrect, Statement (2) correct","Both statements are correct","Both statements are incorrect"]},
+  {q:"3. Which is NOT related to Renaissance Humanism?",o:["Importance to individual freedom","Growth of secular ideas","Blind faith in medieval traditions","Development of art and science"]},
+  {q:"4. Arrange in chronological order:\n(A) Renaissance  (B) French Revolution\n(C) Industrial Revolution  (D) Reformation",o:["A, D, B, C","D, A, C, B","A, C, D, B","B, C, A, D"]},
+  {q:"5. Which is NOT related to Leonardo da Vinci?",o:["Mona Lisa","The Last Supper","Printing Press","Renaissance Art"]},
+  {q:"6. Match the following:",tbl:{h:["Column I","Column II"],r:[["(A) Conduction","(i) Heat transfer through fluids"],["(B) Convection","(ii) Horizontal movement of heat"],["(C) Advection","(iii) Heat transfer through contact"],["(D) Insolation","(iv) Incoming solar radiation"]]},o:["A-(iii), B-(i), C-(ii), D-(iv)","A-(ii), B-(iii), C-(iv), D-(i)","A-(iv), B-(ii), C-(i), D-(iii)","A-(i), B-(iv), C-(iii), D-(ii)"]},
+  {q:"7. Consider the following statements:",sub:"Statement 1: Weather changes frequently.\nStatement 2: Climate refers to atmospheric conditions over a short period.",o:["Statement (1) correct, Statement (2) incorrect","Statement (1) incorrect, Statement (2) correct","Both statements are correct","Both statements are incorrect"]},
+  {q:"8. Which is NOT an element of weather and climate?",o:["Temperature","Humidity","Pressure","Mineral"]},
+  {q:"9. Arrange the correct order of heat transfer:\n(A) Insolation reaches the Earth  (B) Earth gets heated\n(C) Atmosphere gets heated  (D) Terrestrial radiation occurs",o:["A, B, D, C","B, A, C, D","D, C, B, A","A, D, B, C"]},
+  {q:"10. Which is NOT related to convectional rainfall?",o:["Occurs due to heating of air","Common in equatorial regions","Also called '4 O'Clock rains'","Caused by snowfall in polar regions"]}
+];
+const LTRS=['a','b','c','d'];
+const LABS=['A','B','C','D'];
+
+let cur=0,score=0,tv=60,tid=null,done=false;
+let ua=Array(10).fill(null);
+
+function render(){
+  done=false;
+  clearInterval(tid);
+  tv=60;
+  const q=QS[cur];
+  const isWC=cur>=5;
+  document.getElementById('sec-pill').textContent=SEC[cur];
+  document.getElementById('sec-pill').className='sec-pill '+(isWC?'sec-wc':'sec-hum');
+  document.getElementById('prog').style.width=((cur+1)/10*100)+'%';
+  document.getElementById('prog-lbl').textContent=(cur+1)+' / 10';
+  updateT();
+  startT();
+
+  let h='<div class="qcard">';
+  h+='<span class="qnum">Q'+(cur+1)+' of 10 &nbsp;·&nbsp; 1 mark</span>';
+  h+='<div class="qtext">'+q.q+'</div>';
+  if(q.sub) h+='<div class="qsub" style="white-space:pre-line">'+q.sub+'</div>';
+  if(q.tbl){
+    h+='<table class="qtbl"><thead><tr>';
+    q.tbl.h.forEach(hh=>h+='<th>'+hh+'</th>');
+    h+='</tr></thead><tbody>';
+    q.tbl.r.forEach(r=>{h+='<tr>';r.forEach(c=>h+='<td>'+c+'</td>');h+='</tr>';});
+    h+='</tbody></table>';
+  }
+  h+='<div class="opts">';
+  q.o.forEach((o,i)=>{
+    h+='<button class="opt" id="o'+i+'" onclick="pick('+i+')" aria-label="Option '+LABS[i]+': '+o+'">';
+    h+='<span class="badge">'+LABS[i]+'</span>';
+    h+='<span>'+o+'</span>';
+    h+='</button>';
+  });
+  h+='</div>';
+  h+='<div id="tmsg"></div>';
+  h+='</div>';
+  h+='<div class="nav-row">';
+  h+='<span style="font-size:13px;color:var(--color-text-secondary)"><i class="ti ti-cursor-text" aria-hidden="true" style="font-size:15px;vertical-align:-2px;margin-right:4px"></i>Choose one answer</span>';
+  if(cur<9) h+='<button class="nbtn pri" id="nbtn" onclick="nextQ()" disabled>Next <i class="ti ti-arrow-right" aria-hidden="true"></i></button>';
+  else h+='<button class="nbtn pri" id="nbtn" onclick="showRes()" disabled><i class="ti ti-flag" aria-hidden="true"></i> Finish</button>';
+  h+='</div>';
+  document.getElementById('qa').innerHTML=h;
+}
+
+function pick(i){
+  if(done) return;
+  done=true;
+  clearInterval(tid);
+  ua[cur]=LTRS[i];
+  const ca=ANS[cur];
+  const ci=LTRS.indexOf(ca);
+  if(LTRS[i]===ca) score++;
+  QS[cur].o.forEach((_,j)=>{
+    const b=document.getElementById('o'+j);
+    if(!b) return;
+    b.disabled=true;
+    if(j===ci) b.className='opt correct';
+    else if(j===i) b.className='opt wrong';
+    else b.className='opt disabled-plain';
+  });
+  document.getElementById('nbtn').removeAttribute('disabled');
+}
+
+function timeOut(){
+  done=true;
+  const ci=LTRS.indexOf(ANS[cur]);
+  QS[cur].o.forEach((_,j)=>{
+    const b=document.getElementById('o'+j);
+    if(!b) return;
+    b.disabled=true;
+    if(j===ci) b.className='opt correct';
+    else b.className='opt disabled-plain';
+  });
+  document.getElementById('tmsg').innerHTML='<div class="tmsg"><i class="ti ti-clock" aria-hidden="true"></i> Time\'s up! Correct answer highlighted.</div>';
+  document.getElementById('nbtn').removeAttribute('disabled');
+}
+
+function startT(){
+  tid=setInterval(()=>{
+    tv--;
+    updateT();
+    if(tv<=0){clearInterval(tid);if(!done)timeOut();}
+  },1000);
+}
+
+function updateT(){
+  document.getElementById('tnum').textContent=tv;
+  const pct=tv/60*100;
+  const bar=document.getElementById('tbar');
+  bar.style.width=pct+'%';
+  bar.style.background=tv>20?'#185FA5':tv>10?'#BA7517':'#A32D2D';
+  document.getElementById('tnum').style.color=tv>20?'var(--color-text-primary)':tv>10?'#633806':'#791F1F';
+}
+
+function nextQ(){cur++;if(cur<10)render();}
+
+function showRes(){
+  clearInterval(tid);
+  let cor=0,wrg=0,skp=0;
+  ua.forEach((a,i)=>{if(!a)skp++;else if(a===ANS[i])cor++;else wrg++;});
+  const pct=Math.round(cor/10*100);
+  let grade='Keep practising';
+  if(pct>=90)grade='Excellent!';
+  else if(pct>=70)grade='Good job!';
+  else if(pct>=50)grade='Not bad!';
+
+  let h='<div class="result-hdr">';
+  h+='<div style="font-size:13px;color:#B5D4F4;margin-bottom:4px">Final Score</div>';
+  h+='<div class="score-big">'+cor+' <span style="font-size:24px;color:#B5D4F4">/ 10</span></div>';
+  h+='<div class="score-sub">'+pct+'% &nbsp;·&nbsp; '+grade+'</div>';
+  h+='</div>';
+  h+='<div class="stats-grid">';
+  h+='<div class="stat-box c"><div class="stat-num c">'+cor+'</div><div class="stat-lbl">Correct</div></div>';
+  h+='<div class="stat-box w"><div class="stat-num w">'+wrg+'</div><div class="stat-lbl">Wrong</div></div>';
+  h+='<div class="stat-box s"><div class="stat-num s">'+skp+'</div><div class="stat-lbl">Skipped</div></div>';
+  h+='</div>';
+  h+='<table class="ans-table"><thead><tr><th>Q</th><th>Your answer</th><th>Correct answer</th><th>Result</th></tr></thead><tbody>';
+  QS.forEach((q,i)=>{
+    const ca=ANS[i];
+    const ci=LTRS.indexOf(ca);
+    const correctTxt='('+ca.toUpperCase()+') '+q.o[ci];
+    let userTxt='—', tag='<span class="tag sk">Skipped</span>';
+    if(ua[i]){
+      const ui=LTRS.indexOf(ua[i]);
+      userTxt='('+ua[i].toUpperCase()+') '+q.o[ui];
+      tag=ua[i]===ca?'<span class="tag ok">✓ Correct</span>':'<span class="tag no">✗ Wrong</span>';
+    }
+    h+='<tr><td style="font-weight:500">Q'+(i+1)+'</td><td>'+userTxt+'</td><td style="color:#3B6D11">'+correctTxt+'</td><td>'+tag+'</td></tr>';
+  });
+  h+='</tbody></table>';
+  h+='<div style="text-align:center;margin-top:1.25rem">';
+  h+='<button class="nbtn pri" onclick="restart()"><i class="ti ti-refresh" aria-hidden="true"></i> Restart Quiz</button>';
+  h+='</div>';
+  document.getElementById('qa').innerHTML=h;
+  document.getElementById('qw').querySelector('.qhdr').style.display='none';
+  document.getElementById('qw').querySelector('.prog-row').style.display='none';
+}
+
+function restart(){
+  cur=0;score=0;tv=60;ua=Array(10).fill(null);done=false;
+  const hdr=document.getElementById('qw').querySelector('.qhdr');
+  const pr=document.getElementById('qw').querySelector('.prog-row');
+  if(hdr)hdr.style.display='';
+  if(pr)pr.style.display='';
+  render();
+}
+
+render();
+</script>
